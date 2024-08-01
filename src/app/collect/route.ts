@@ -4,14 +4,6 @@ import { NextRequest, NextResponse } from "next/server";
 const COOKIE_NAME = "tid";
 
 export const POST = async (req: NextRequest) => {
-  let sessionToken = req.cookies.get(COOKIE_NAME)?.value;
-  const res = NextResponse.json({});
-
-  if (!sessionToken) {
-    sessionToken = crypto.randomUUID();
-    res.cookies.set(COOKIE_NAME, sessionToken);
-  }
-
   const userAgent = req.headers.get("User-Agent");
   const country = req.geo?.country ?? "US";
   const ip = req.ip;
@@ -21,6 +13,17 @@ export const POST = async (req: NextRequest) => {
     '"',
     ""
   );
+
+  let sessionToken = req.cookies.get(COOKIE_NAME)?.value;
+  const res = NextResponse.json({
+    country,
+    platform,
+  });
+
+  if (!sessionToken) {
+    sessionToken = crypto.randomUUID();
+    res.cookies.set(COOKIE_NAME, sessionToken);
+  }
 
   const path = body?.path ?? "/";
   const referrer = body?.referrer ?? null;
