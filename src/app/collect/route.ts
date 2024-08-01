@@ -5,7 +5,7 @@ const COOKIE_NAME = "tid";
 
 export const POST = async (req: NextRequest) => {
   const userAgent = req.headers.get("User-Agent");
-  const country = req.geo?.country ?? "US";
+  const country = req.headers.get("X-Vercel-IP-Country") ?? "US";
   const ip = req.ip;
   const timestamp = Math.floor(Date.now() / 1000);
   const body = await req.json();
