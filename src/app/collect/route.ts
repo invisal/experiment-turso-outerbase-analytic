@@ -38,8 +38,8 @@ export const POST = async (req: NextRequest) => {
     authToken: process.env.DATABASE_TOKEN,
   });
 
-  client
-    .batch([
+  try {
+    await client.batch([
       {
         sql: "INSERT INTO page_view(session_id, user_agent, country, ip, created_at, path, referrer, referrer_host, platform) VALUES(:session_id, :user_agent, :country, :ip, :created_at, :path, :referrer, :referrer_host, :platform)",
         args: {
@@ -61,9 +61,10 @@ export const POST = async (req: NextRequest) => {
           last_visited_at: timestamp,
         },
       },
-    ])
-    .then()
-    .catch(console.error);
+    ]);
+  } catch (e) {
+    console.error(e);
+  }
 
   return res;
 };
