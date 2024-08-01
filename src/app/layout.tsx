@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import Link from "next/link";
+import { Analytic } from "./collect/analytics";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,7 +18,40 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <main className="p-4">
+          <h1 className="font-bold text-3xl mb-2">
+            Example of NextJS Analytics
+          </h1>
+
+          <ul className="mb-10 flex gap-4">
+            <li>
+              <Link href="/" className="text-blue-500 underline">
+                Home
+              </Link>
+            </li>
+            <li>
+              <Link href="/page1" className="text-blue-500 underline">
+                Page 1
+              </Link>
+            </li>
+            <li>
+              <Link href="/page2" className="text-blue-500 underline">
+                Page 2
+              </Link>
+            </li>
+            <li>
+              <Link href="/page3" className="text-blue-500 underline">
+                Page 3
+              </Link>
+            </li>
+          </ul>
+
+          {children}
+        </main>
+
+        <Analytic path="/collect" />
+      </body>
     </html>
   );
 }
